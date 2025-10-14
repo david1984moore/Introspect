@@ -153,7 +153,7 @@ export default function HomePage() {
               </div>
               <h4 className="font-semibold mb-2">Answer Questions</h4>
               <p className="text-gray-600 text-sm">
-                Tell us about your business, goals, and preferences in 6 simple sections
+                Tell us about your business, goals, and preferences in 7 simple sections
               </p>
             </div>
             <div>

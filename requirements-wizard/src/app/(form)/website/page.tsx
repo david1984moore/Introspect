@@ -12,6 +12,7 @@ import Section3PagesContent from '@/components/form-sections/Section3PagesConten
 import Section4LookFeel from '@/components/form-sections/Section4LookFeel'
 import Section5Technical from '@/components/form-sections/Section5Technical'
 import Section6BudgetTimeline from '@/components/form-sections/Section6BudgetTimeline'
+import Section7ReviewSubmit from '@/components/form-sections/Section7ReviewSubmit'
 
 interface FormData {
   section1: {
@@ -52,7 +53,8 @@ interface FormData {
 }
 
 export default function WebsiteQuestionnaire() {
-  const [currentStep, setCurrentStep] = useState(0) // 0 = overview, 1-6 = sections
+  const [currentStep, setCurrentStep] = useState(0) // 0 = overview, 1-7 = sections
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState<FormData>({
     section1: {
       businessName: '',
@@ -127,10 +129,44 @@ export default function WebsiteQuestionnaire() {
     setCurrentStep(1)
   }
 
+  const handleSubmit = async () => {
+    setIsSubmitting(true)
+    try {
+      const response = await fetch('/api/generate-scope', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const result = await response.json()
+      
+      if (result.success) {
+        // Store results in sessionStorage for the results page
+        sessionStorage.setItem('projectScopeResults', JSON.stringify(result.data))
+        
+        // Redirect to results page
+        window.location.href = '/website/results'
+      } else {
+        throw new Error(result.error || 'Unknown error occurred')
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      alert(`❌ Error submitting form: ${error instanceof Error ? error.message : 'Please try again.'}`)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   // Calculate progress
   const getProgress = () => {
     if (currentStep === 0) return 0
-    return (currentStep / 6) * 100
+    return (currentStep / 7) * 100
   }
 
   // Get current step title
@@ -143,6 +179,7 @@ export default function WebsiteQuestionnaire() {
       case 4: return 'Look & Feel'
       case 5: return 'Technical Details'
       case 6: return 'Budget & Timeline'
+      case 7: return 'Review & Submit'
       default: return 'Unknown'
     }
   }
@@ -206,6 +243,16 @@ export default function WebsiteQuestionnaire() {
             onBack={handleBack}
           />
         )
+      case 7:
+        return (
+          <Section7ReviewSubmit
+            data={formData}
+            onEdit={(section) => setCurrentStep(section)}
+            onSubmit={handleSubmit}
+            onBack={handleBack}
+            isSubmitting={isSubmitting}
+          />
+        )
       default:
         return (
           <div className="text-center py-12">
@@ -234,7 +281,7 @@ export default function WebsiteQuestionnaire() {
         <CardContent>
           <p className="text-gray-600 mb-4">
             We'll ask you about your business, website goals, content needs, design preferences, 
-            technical requirements, and budget. Most questions use checkboxes and dropdowns - minimal typing required.
+            technical requirements, budget, and then review everything together. Most questions use checkboxes and dropdowns - minimal typing required.
           </p>
           <div className="grid md:grid-cols-3 gap-4">
             <div className="text-center p-4 bg-blue-50 rounded-lg">
@@ -260,7 +307,7 @@ export default function WebsiteQuestionnaire() {
       <div className="grid md:grid-cols-2 gap-6 mb-8">
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">The 6 Sections</CardTitle>
+            <CardTitle className="text-lg">The 7 Sections</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex items-center space-x-3">
@@ -315,6 +362,15 @@ export default function WebsiteQuestionnaire() {
               <div>
                 <div className="font-medium">Budget & Timeline</div>
                 <div className="text-sm text-gray-600">Investment range, launch goals</div>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <span className="text-sm font-bold text-blue-600">7</span>
+              </div>
+              <div>
+                <div className="font-medium">Review & Submit</div>
+                <div className="text-sm text-gray-600">Final review and project scope generation</div>
               </div>
             </div>
           </CardContent>
@@ -401,7 +457,7 @@ export default function WebsiteQuestionnaire() {
               {currentStep === 0 ? 'Website Requirements' : `Section ${currentStep}: ${getStepTitle()}`}
             </h1>
             <span className="text-sm text-gray-600">
-              {currentStep === 0 ? 'Overview' : `Step ${currentStep} of 6`}
+              {currentStep === 0 ? 'Overview' : `Step ${currentStep} of 7`}
             </span>
           </div>
           <Progress value={getProgress()} className="h-2" />
