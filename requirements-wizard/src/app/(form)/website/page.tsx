@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress'
 import { ArrowLeft, Clock, Users, FileText, Palette, Settings, DollarSign } from 'lucide-react'
 import { useState } from 'react'
 import Section1Business from '@/components/form-sections/Section1Business'
+import Section2WebsiteGoals from '@/components/form-sections/Section2WebsiteGoals'
 
 interface FormData {
   section1: {
@@ -14,6 +15,13 @@ interface FormData {
     businessDescription: string
     targetCustomers: string[]
     differentiators: string
+  }
+  section2: {
+    visitorGoals: string[]
+    paymentMethods: string[]
+    bookingType: string
+    contactPreference: string
+    additionalFeatures: string[]
   }
 }
 
@@ -25,11 +33,22 @@ export default function WebsiteQuestionnaire() {
       businessDescription: '',
       targetCustomers: [],
       differentiators: ''
+    },
+    section2: {
+      visitorGoals: [],
+      paymentMethods: [],
+      bookingType: '',
+      contactPreference: '',
+      additionalFeatures: []
     }
   })
 
   const handleSection1Change = (data: FormData['section1']) => {
     setFormData(prev => ({ ...prev, section1: data }))
+  }
+
+  const handleSection2Change = (data: FormData['section2']) => {
+    setFormData(prev => ({ ...prev, section2: data }))
   }
 
   const handleNext = () => {
@@ -74,6 +93,15 @@ export default function WebsiteQuestionnaire() {
           <Section1Business
             data={formData.section1}
             onDataChange={handleSection1Change}
+            onNext={handleNext}
+            onBack={handleBack}
+          />
+        )
+      case 2:
+        return (
+          <Section2WebsiteGoals
+            data={formData.section2}
+            onDataChange={handleSection2Change}
             onNext={handleNext}
             onBack={handleBack}
           />
