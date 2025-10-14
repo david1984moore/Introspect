@@ -8,6 +8,8 @@ import { ArrowLeft, Clock, Users, FileText, Palette, Settings, DollarSign } from
 import { useState } from 'react'
 import Section1Business from '@/components/form-sections/Section1Business'
 import Section2WebsiteGoals from '@/components/form-sections/Section2WebsiteGoals'
+import Section3PagesContent from '@/components/form-sections/Section3PagesContent'
+import Section4LookFeel from '@/components/form-sections/Section4LookFeel'
 
 interface FormData {
   section1: {
@@ -22,6 +24,17 @@ interface FormData {
     bookingType: string
     contactPreference: string
     additionalFeatures: string[]
+  }
+  section3: {
+    selectedPages: string[]
+    contentStatus: Record<string, string>
+  }
+  section4: {
+    exampleWebsites: string[]
+    designLikes: string[]
+    emotionalTone: string[]
+    logoStatus: string
+    colorPreferences: string[]
   }
 }
 
@@ -40,6 +53,17 @@ export default function WebsiteQuestionnaire() {
       bookingType: '',
       contactPreference: '',
       additionalFeatures: []
+    },
+    section3: {
+      selectedPages: [],
+      contentStatus: {}
+    },
+    section4: {
+      exampleWebsites: [],
+      designLikes: [],
+      emotionalTone: [],
+      logoStatus: '',
+      colorPreferences: []
     }
   })
 
@@ -49,6 +73,14 @@ export default function WebsiteQuestionnaire() {
 
   const handleSection2Change = (data: FormData['section2']) => {
     setFormData(prev => ({ ...prev, section2: data }))
+  }
+
+  const handleSection3Change = (data: FormData['section3']) => {
+    setFormData(prev => ({ ...prev, section3: data }))
+  }
+
+  const handleSection4Change = (data: FormData['section4']) => {
+    setFormData(prev => ({ ...prev, section4: data }))
   }
 
   const handleNext = () => {
@@ -102,6 +134,24 @@ export default function WebsiteQuestionnaire() {
           <Section2WebsiteGoals
             data={formData.section2}
             onDataChange={handleSection2Change}
+            onNext={handleNext}
+            onBack={handleBack}
+          />
+        )
+      case 3:
+        return (
+          <Section3PagesContent
+            data={formData.section3}
+            onUpdate={handleSection3Change}
+            onNext={handleNext}
+            onBack={handleBack}
+          />
+        )
+      case 4:
+        return (
+          <Section4LookFeel
+            data={formData.section4}
+            onDataChange={handleSection4Change}
             onNext={handleNext}
             onBack={handleBack}
           />
