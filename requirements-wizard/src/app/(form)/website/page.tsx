@@ -5,11 +5,12 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { ArrowLeft, Clock, Users, FileText, Palette, Settings, DollarSign } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import Section1Business from '@/components/form-sections/Section1Business'
 import Section2WebsiteGoals from '@/components/form-sections/Section2WebsiteGoals'
 import Section3PagesContent from '@/components/form-sections/Section3PagesContent'
 import Section4LookFeel from '@/components/form-sections/Section4LookFeel'
+import Section5Technical from '@/components/form-sections/Section5Technical'
 
 interface FormData {
   section1: {
@@ -35,6 +36,12 @@ interface FormData {
     emotionalTone: string[]
     logoStatus: string
     colorPreferences: string[]
+  }
+  section5: {
+    whoUpdates: string
+    updateFrequency: string
+    domainStatus: string
+    emailNeeds: string[]
   }
 }
 
@@ -64,24 +71,34 @@ export default function WebsiteQuestionnaire() {
       emotionalTone: [],
       logoStatus: '',
       colorPreferences: []
+    },
+    section5: {
+      whoUpdates: '',
+      updateFrequency: '',
+      domainStatus: '',
+      emailNeeds: []
     }
   })
 
-  const handleSection1Change = (data: FormData['section1']) => {
+  const handleSection1Change = useCallback((data: FormData['section1']) => {
     setFormData(prev => ({ ...prev, section1: data }))
-  }
+  }, [])
 
-  const handleSection2Change = (data: FormData['section2']) => {
+  const handleSection2Change = useCallback((data: FormData['section2']) => {
     setFormData(prev => ({ ...prev, section2: data }))
-  }
+  }, [])
 
-  const handleSection3Change = (data: FormData['section3']) => {
+  const handleSection3Change = useCallback((data: FormData['section3']) => {
     setFormData(prev => ({ ...prev, section3: data }))
-  }
+  }, [])
 
-  const handleSection4Change = (data: FormData['section4']) => {
+  const handleSection4Change = useCallback((data: FormData['section4']) => {
     setFormData(prev => ({ ...prev, section4: data }))
-  }
+  }, [])
+
+  const handleSection5Change = useCallback((data: FormData['section5']) => {
+    setFormData(prev => ({ ...prev, section5: data }))
+  }, [])
 
   const handleNext = () => {
     setCurrentStep(prev => prev + 1)
@@ -154,6 +171,15 @@ export default function WebsiteQuestionnaire() {
             onDataChange={handleSection4Change}
             onNext={handleNext}
             onBack={handleBack}
+          />
+        )
+      case 5:
+        return (
+          <Section5Technical
+            formData={formData.section5}
+            updateFormData={handleSection5Change}
+            onNext={handleNext}
+            onPrevious={handleBack}
           />
         )
       default:
