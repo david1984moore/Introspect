@@ -11,6 +11,7 @@ import Section2WebsiteGoals from '@/components/form-sections/Section2WebsiteGoal
 import Section3PagesContent from '@/components/form-sections/Section3PagesContent'
 import Section4LookFeel from '@/components/form-sections/Section4LookFeel'
 import Section5Technical from '@/components/form-sections/Section5Technical'
+import Section6BudgetTimeline from '@/components/form-sections/Section6BudgetTimeline'
 
 interface FormData {
   section1: {
@@ -42,6 +43,11 @@ interface FormData {
     updateFrequency: string
     domainStatus: string
     emailNeeds: string[]
+  }
+  section6: {
+    budgetRange: string
+    launchTimeline: string
+    urgencyReason: string
   }
 }
 
@@ -77,6 +83,11 @@ export default function WebsiteQuestionnaire() {
       updateFrequency: '',
       domainStatus: '',
       emailNeeds: []
+    },
+    section6: {
+      budgetRange: '',
+      launchTimeline: '',
+      urgencyReason: ''
     }
   })
 
@@ -98,6 +109,10 @@ export default function WebsiteQuestionnaire() {
 
   const handleSection5Change = useCallback((data: FormData['section5']) => {
     setFormData(prev => ({ ...prev, section5: data }))
+  }, [])
+
+  const handleSection6Change = useCallback((data: FormData['section6']) => {
+    setFormData(prev => ({ ...prev, section6: data }))
   }, [])
 
   const handleNext = () => {
@@ -180,6 +195,15 @@ export default function WebsiteQuestionnaire() {
             updateFormData={handleSection5Change}
             onNext={handleNext}
             onPrevious={handleBack}
+          />
+        )
+      case 6:
+        return (
+          <Section6BudgetTimeline
+            data={formData.section6}
+            onChange={handleSection6Change}
+            onNext={handleNext}
+            onBack={handleBack}
           />
         )
       default:
