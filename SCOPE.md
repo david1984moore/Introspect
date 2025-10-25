@@ -1,363 +1,316 @@
-# Project Scope: Client Requirements Gathering Tool
+# Introspect: Build Strategy Scope
 
-**Project Name:** Applicreations Requirements Wizard
-**Version:** 1.0
-**Last Updated:** October 14, 2025
+**Project Name:** Introspect - Intelligent Project Requirements Questionnaire  
+**Project Type:** Web Application (Next.js)  
+**Version:** 1.0  
+**Generated:** October 24, 2025  
+**Target Launch:** 6-8 weeks from start  
 
 ---
 
 ## ✅ IN SCOPE (What We're Building)
 
-### Core Features
+### Core Application Flow
 
-1. **Website Requirements Questionnaire** (Primary - MVP)
-   - 6-section conversational form (20 minutes max completion time)
-   - Smart branching logic (questions adapt based on previous answers)
-   - Progress indicator and save/resume functionality
-   - Mobile-responsive design (mobile-first approach)
+1. **Adaptive Multi-Page Questionnaire**
+   - Description: 18-question form with conditional logic that adapts to user's business type
+   - Technical approach: React state machine with question branching based on Q1 answer
+   - Priority: Must-have
+   - Details: One question per screen on mobile, grouped sections on desktop (5 sections total)
 
-2. **Application Requirements Questionnaire** (Secondary - Phase 2)
-   - Alternative form option when starting new project
-   - Similar structure to website version but app-focused questions
+2. **Real-Time Cost Calculator**
+   - Description: Running total visible at all times, updates as user selects features
+   - Technical approach: Client-side calculation engine with feature cost database
+   - Priority: Must-have
+   - Details: Feature costs include platform multipliers (iOS/Android 1.5x), integration costs, complexity factors
 
-3. **AI Analysis Engine**
-   - Processes client responses using Claude/GPT API
-   - Generates tech stack recommendations with reasoning
-   - Creates realistic timeline and budget estimates
-   - Identifies potential risks and dependencies
-   - Produces two versions of output (client-friendly + technical)
+3. **Automated Scope Document Generation**
+   - Description: Generate comprehensive 24-40 page PDF scope upon completion, auto-sent to solutions@applicreations.com
+   - Technical approach: React-PDF or Puppeteer, structured template with user responses
+   - Priority: Must-have
+   - Details: Contains business context, functional requirements, technical specs, risk assessment
 
-4. **Dual Report Generation**
-   - **Client Version:** Plain English summary with next steps
-   - **Technical Version:** Full SCOPE.md formatted for Cursor workflow
-   - Both versions generated simultaneously from same data
+4. **Session Persistence System**
+   - Description: Auto-save progress to localStorage, survive browser close/refresh
+   - Technical approach: Debounced localStorage writes (500ms), state rehydration on load
+   - Priority: Must-have
+   - Details: Persist for 7 days, clear after submission
 
-5. **Email Delivery System**
-   - Sends technical SCOPE.md to Applicreations email
-   - Sends client version to client's email
-   - Includes both as downloadable attachments
+5. **Client Prototype & Spec Delivery System**
+   - Description: 48-hour delivery of interactive prototype + 8-12 page PDF spec to client
+   - Technical approach: Email service integration (SendGrid/Postmark) + manual prototype creation workflow
+   - Priority: Must-have
+   - Details: Email contains PDF attachment + prototype link, triggered by internal team after scope review
 
-### Must-Have Requirements (MVP)
+### Question Architecture & UX Patterns
 
-- Works perfectly on mobile devices (60%+ of small business owners use phones)
-- Completion time under 20 minutes with all follow-ups
-- No technical jargon in client-facing questions
-- Visual, engaging UI (icons, progress bar, friendly copy)
-- Save progress functionality (generates unique link to resume)
-- Questions use checkboxes, radio buttons, and simple text fields (minimal typing)
-- Conditional logic shows/hides questions based on selections
-- All generated content is copy-paste ready (properly formatted markdown)
-- Client version uses simple language, analogies, and clear expectations
-- Technical version includes all details needed for Cursor workflow
+6. **Trust Bank Opening Sequence (Q1-Q3)**
+   - Description: Easy momentum-building questions that establish context
+   - Technical approach: Q1 (business type) triggers Q2 adaptive wording, Q2 answer pre-fills Q3 with smart default
+   - Priority: Must-have
+   - Research basis: Zeigarnik Effect, 53% conversion rate pattern (Venture Harbour)
+
+7. **Progressive Disclosure by Device**
+   - Description: Desktop groups 3-5 questions per screen, mobile shows one at a time
+   - Technical approach: CSS Grid + media queries, conditional rendering based on viewport
+   - Priority: Must-have
+   - Research basis: Baymard Institute—forms over 20 fields need one-thing-per-page
+
+8. **Accessibility Compliance (WCAG 2.1 AA)**
+   - Description: Keyboard navigation, screen reader support, high contrast, 44px touch targets
+   - Technical approach: Semantic HTML, ARIA labels, focus management, skip links
+   - Priority: Must-have
+   - Details: Tab order, error announcements, clear focus indicators
+
+### Must-Have Requirements
+
+- **Performance:** First contentful paint <1.5s, form interaction <100ms response, cost calculation <50ms
+- **Compatibility:** Modern browsers (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+), iOS 14+, Android 10+
+- **Security:** HTTPS only, rate limiting (10 submissions/hour/IP), input sanitization, no session hijacking
+- **Data Flow:** Form → localStorage → submission → Supabase → scope generation → email to solutions@applicreations.com
+- **Mobile-First:** 60% of traffic expected mobile, keyboard doesn't obscure fields, smooth scrolling
 
 ### Success Criteria
 
-- [ ] Non-technical user can complete website questionnaire in under 20 minutes
-- [ ] AI generates accurate tech stack recommendation 90%+ of time
-- [ ] Generated SCOPE.md requires minimal manual editing
-- [ ] Client version is understandable to someone with zero tech knowledge
-- [ ] Technical version contains all sections from Cursor workflow template
-- [ ] Email delivery works 100% reliably
-- [ ] Form can be completed entirely on mobile device
-- [ ] Save/resume link works after page refresh or returning later
+- [ ] User can complete entire questionnaire without errors on mobile and desktop
+- [ ] Cost calculator updates in <50ms as features are selected
+- [ ] Session persists after browser close and reopens with all answers intact
+- [ ] Scope PDF generates automatically within 5 seconds of form submission
+- [ ] Email with scope arrives at solutions@applicreations.com within 30 seconds
+- [ ] Form passes WCAG 2.1 AA automated testing (axe DevTools)
+- [ ] 70%+ completion rate after Q3 (measured in analytics)
+- [ ] Average completion time 4-8 minutes for typical user
 
 ---
 
-## 📋 QUESTIONNAIRE STRUCTURE
+## ❌ OUT OF SCOPE (NOT Building)
 
-### Section 1: Your Business (3 mins)
-- Business name
-- One-sentence description
-- Target customers (checkboxes)
-- What makes them different (text)
-
-### Section 2: Website Goals (5 mins)
-- What visitors should be able to do (multi-select checkboxes with descriptions)
-- Conditional follow-ups based on selections (e.g., if "order online" → ask about payment)
-
-### Section 3: Pages & Content (3 mins)
-- Which pages they need (pre-checked smart defaults)
-- Content readiness status (have it / need help / have nothing)
-
-### Section 4: Look & Feel (4 mins)
-- Example websites they like (URL inputs)
-- What they like about them (checkboxes)
-- Desired emotional tone (pick 3)
-- Logo status
-- Color preferences
-
-### Section 5: Technical (Simplified) (3 mins)
-- Who will update the site
-- How often things change
-- Domain ownership status
-- Professional email needs
-
-### Section 6: Budget & Timeline (2 mins)
-- Budget range (with explanations of what each gets)
-- Launch timeline
-- Reason for needing site now
+- **User authentication system** - Why: MVP users are anonymous until Q18, no login needed
+- **Payment processing integration** - Why: This tool captures requirements; payment happens in sales process
+- **Client portal/dashboard** - Why: Deferred to Phase 3 (post-MVP), clients receive email only for now
+- **Multi-language support** - Why: Phase 2 enhancement, starting with English only
+- **Voice input functionality** - Why: Phase 3 feature, requires extensive testing
+- **AI chat clarification** - Why: Phase 3, structured questionnaire sufficient for MVP
+- **CRM integration** - Why: Manual email handoff sufficient for launch, automate later
+- **File upload for design assets** - Why: Phase 2, collect via follow-up email for now
+- **Real-time collaborative editing** - Why: Phase 3, single user completing form is primary use case
 
 ---
 
-## 🛠️ TECHNICAL IMPLEMENTATION
+## 🅿️ PARKING LOT (Great Ideas for Later)
 
-### Tech Stack
-- **Frontend:** Next.js 14 (App Router) + React
-- **Styling:** Tailwind CSS + Shadcn/ui components
-- **Form Logic:** React Hook Form + Zod validation
-- **AI Integration:** Anthropic Claude API (using existing credentials)
-- **Email Service:** Resend (simple API, generous free tier)
-- **Database:** Supabase (PostgreSQL + auth if needed later)
-- **Hosting:** Vercel (Next.js optimized, free tier)
+1. **Save & Resume via Email Link (Phase 2)**
+   - Capture email after Q3, send magic link for recovery
+   - Why not now: Adds complexity, localStorage sufficient for MVP
+   - Revisit when: After 1 month of data shows abandonment patterns
+   - Estimated effort: 1 week
 
-### File Structure
-```
-/app
-  /page.tsx                    # Landing page
-  /(form)
-    /website/page.tsx          # Website questionnaire
-    /application/page.tsx      # App questionnaire (Phase 2)
-  /api
-    /generate-scope/route.ts   # AI analysis endpoint
-    /send-email/route.ts       # Email delivery endpoint
-/components
-  /form-sections/              # Individual form section components
-  /ui/                         # Shadcn components
-/lib
-  /ai-prompts.ts               # Claude prompts for analysis
-  /scope-template.ts           # SCOPE.md generation logic
-  /validations.ts              # Zod schemas
-```
+2. **Industry-Specific Question Branches (Phase 2)**
+   - Restaurant-specific: Kitchen display integration, loyalty programs
+   - E-commerce: Inventory, shipping, marketplace integrations
+   - Why not now: 18 questions cover 80% of cases, specialization can wait
+   - Revisit when: After identifying top 3 business types in data
+   - Estimated effort: 2 weeks per industry
 
-### API Integrations
-- **Anthropic Claude API:** For intelligent analysis and scope generation
-- **Resend:** For reliable email delivery
-- **Supabase (Optional):** For saving submissions and resume functionality
+3. **A/B Testing Framework (Phase 2)**
+   - Test question wording, order, grouping strategies
+   - Why not now: Need baseline data first before optimizing
+   - Revisit when: After 100+ completed submissions
+   - Estimated effort: 1 week
+
+4. **Regional Pricing Models (Phase 2)**
+   - Adjust costs based on client location (SF 1.4x, NYC 1.3x)
+   - Why not now: Starting with base pricing, expand after validation
+   - Revisit when: Expanding beyond local market
+   - Estimated effort: 1 week
 
 ---
 
-## ❌ OUT OF SCOPE (NOT Building in v1.0)
+## 📋 Technical Stack & Constraints
 
-- ❌ **User authentication/login** - Not needed for v1.0, no repeat users expected
-- ❌ **Admin dashboard** - Can view emails for now, build dashboard in v2.0
-- ❌ **Payment processing** - This tool is free for clients, no payments
-- ❌ **Digital signatures** - Just email approval for now, add e-signature later
-- ❌ **Multi-language support** - English only for v1.0
-- ❌ **Video tutorials** - Text instructions sufficient for launch
-- ❌ **Client portal** - One-time form, no need for clients to log back in
-- ❌ **Version control/revisions** - If client wants changes, they restart form
-- ❌ **PDF generation** - Markdown output is sufficient, PDF is nice-to-have
-- ❌ **Analytics dashboard** - Can add Google Analytics later
-- ❌ **Template library** - Just website + app forms for now
-- ❌ **White-label/licensing** - Build for Applicreations only first
+**Frontend Framework:** Next.js 14 (App Router)  
+**Language:** TypeScript (strict mode)  
+**Styling:** Tailwind CSS (utility-first, mobile-first approach)  
+**State Management:** React Context + useReducer (no external state library)  
+**Forms:** React Hook Form + Zod validation  
+**Database:** Supabase (PostgreSQL, real-time subscriptions)  
+**Email Service:** SendGrid or Postmark (scope delivery)  
+**PDF Generation:** React-PDF or Puppeteer (scope document)  
+**Analytics:** Plausible or Simple Analytics (privacy-focused)  
+**Hosting:** Vercel (serverless, edge functions)  
+**Domain:** introspect.applicreations.com  
 
----
+**Design Constraints:**
+- Jobs/Ives principle: Invisible sophistication, effortless progress
+- No celebratory animations or visual clutter
+- Plain English at 6th-8th grade reading level
+- Helper text only where it adds measurable value
+- Professional design builds trust (no playful illustrations)
 
-## 🅿️ PARKING LOT (Great Ideas for v2.0)
-
-1. **Admin Dashboard**
-   - Why not now: Can manage via email for first 10-20 submissions
-   - Revisit when: Processing 5+ forms per week
-   - Would include: View all submissions, search, export to CSV
-
-2. **Visual Example Gallery**
-   - Why not now: Adds complexity to v1.0
-   - Revisit when: Have collected 20+ example sites
-   - Would include: Curated gallery of sites by style/industry
-
-3. **PDF Export**
-   - Why not now: Markdown is sufficient for technical version
-   - Revisit when: Clients request it
-   - Would include: Beautifully formatted PDF of client version
-
-4. **Digital Signature Capture**
-   - Why not now: Email approval works for now
-   - Revisit when: Need legal enforceability
-   - Would include: DocuSign-style signature flow
-
-5. **AI-Powered Photo Analysis**
-   - Why not now: Beyond MVP scope
-   - Revisit when: v1.0 working smoothly
-   - Would include: Client uploads photos, AI assesses quality/suitability
-
-6. **Industry-Specific Templates**
-   - Why not now: Website/app split is enough variation
-   - Revisit when: Noticing patterns by industry
-   - Would include: Restaurant, retail, service business, etc.
-
-7. **Client Follow-Up Automation**
-   - Why not now: Manual follow-up is fine for low volume
-   - Revisit when: Processing 10+ forms per week
-   - Would include: Auto-send reminder emails, schedule calls
-
-8. **Pricing Calculator Integration**
-   - Why not now: AI estimates are sufficient
-   - Revisit when: Want dynamic pricing
-   - Would include: Real-time price updates based on selections
+**Performance Budget:**
+- Initial bundle size: <250KB gzipped
+- Time to interactive: <3s on 4G connection
+- Lighthouse score: 90+ across all metrics
 
 ---
 
-## 📅 DEVELOPMENT PHASES
+## 🎯 Assumptions & Dependencies
 
-### Phase 1: MVP (Weeks 1-3)
-**Goal:** Working website questionnaire with email delivery
+**We assume:**
+- Users have modern browser (released within last 3 years)
+- JavaScript enabled (progressive enhancement not required for MVP)
+- User completes form in single session (session recovery is enhancement)
+- Solutions@applicreations.com monitored daily for incoming scopes
+- Manual prototype creation workflow in place (team creates Figma mockups within 48 hours)
 
-**Week 1:**
-- [ ] Project setup (Next.js, Tailwind, Supabase)
-- [ ] Build basic UI components (progress bar, form sections)
-- [ ] Create landing page
-- [ ] Implement Section 1-2 of questionnaire
+**Team provides:**
+- [ ] Feature cost database (CSV or JSON with all pricing data)
+- [ ] Scope document template (structured format for PDF generation)
+- [ ] Email template copy (for client prototype delivery)
+- [ ] Brand assets (logo, colors, typography) for questionnaire interface
+- [ ] Content for Q1 business type options (finalized list of 8-12 categories)
 
-**Week 2:**
-- [ ] Complete Sections 3-6 of questionnaire
-- [ ] Add conditional logic and form validation
-- [ ] Implement save/resume functionality
-- [ ] Build AI analysis integration
-
-**Week 3:**
-- [ ] Create SCOPE.md generation logic
-- [ ] Build email delivery system
-- [ ] Test with 3-5 sample scenarios
-- [ ] Deploy to Vercel
-- [ ] Polish UI and copy
-
-**Deliverable:** Live tool at applicreations-wizard.vercel.app
-
-### Phase 2: Application Form (Week 4)
-- [ ] Duplicate and modify form for application projects
-- [ ] Add app-specific questions
-- [ ] Update AI prompts for app analysis
-- [ ] Test with 2 app scenarios
-- [ ] Add form selection on landing page
-
-### Phase 3: Polish & Real-World Testing (Week 5)
-- [ ] Use with 3 real clients
-- [ ] Collect feedback and iterate
-- [ ] Fix bugs and edge cases
-- [ ] Improve AI prompt accuracy
-- [ ] Add analytics tracking
+**Blockers if missing:**
+- Feature cost data → Cannot calculate real-time costs
+- Scope template → Cannot generate consistent documents
+- Email copy → Cannot deliver client-facing materials
+- Team bandwidth → 48-hour delivery promise fails
 
 ---
 
-## 🎯 SAMPLE OUTPUTS
+## 🔍 DEVELOPER REVIEW NEEDED
 
-### Technical SCOPE.md Must Include:
-- Project type and client info
-- All IN SCOPE features with detailed descriptions
-- OUT OF SCOPE items with reasons
-- Parking lot for future ideas
-- Recommended tech stack with reasoning
-- Timeline with weekly milestones
-- Budget breakdown (one-time + recurring)
-- Client responsibilities checklist
-- Risk assessment table
-- Success criteria checkboxes
-- Approval section placeholder
+**Technical decisions to validate:**
+- [ ] Supabase vs. Firebase vs. custom API (database choice)
+- [ ] React-PDF vs. Puppeteer (PDF generation approach—tradeoffs in complexity vs. control)
+- [ ] SendGrid vs. Postmark vs. AWS SES (email service—cost vs. deliverability)
+- [ ] Client-side vs. server-side cost calculation (security vs. performance)
+- [ ] localStorage vs. cookies vs. sessionStorage (persistence mechanism)
 
-### Client Version Must Include:
-- Business name and project summary
-- Plain English list of pages/features
-- Visual style description
-- "What Happens Next" timeline
-- Investment breakdown (avoid "cost", say "investment")
-- What client needs to provide
-- Next steps after approval
-- Friendly, encouraging tone throughout
+**Question architecture to finalize:**
+- [ ] Exact wording for all 18 questions (provided in research doc but needs product owner approval)
+- [ ] Feature list for Q6-Q13 (must match cost database exactly)
+- [ ] Conditional logic rules (when do Q9, Q11-Q12 appear?)
+- [ ] Budget range options for Q16 (must align with realistic project costs)
+- [ ] Timeline options for Q17 (must be achievable by team)
 
----
+**Integration details needed:**
+- [ ] solutions@applicreations.com inbox setup (forwarding, monitoring)
+- [ ] Domain DNS configuration (introspect.applicreations.com → Vercel)
+- [ ] Analytics account setup (Plausible or Simple Analytics)
+- [ ] Email service API keys (SendGrid/Postmark)
+- [ ] Error monitoring service (Sentry or LogRocket)
 
-## 💰 PROJECT CONSTRAINTS
-
-### Time Budget
-- **Target completion:** 5 weeks (MVP + testing)
-- **Daily time commitment:** 2-3 hours
-- **Total estimated hours:** 70-105 hours
-
-### Financial Budget
-- **Domain:** $15/year (applicreationsrequirements.com)
-- **Vercel Hosting:** $0 (free tier sufficient for v1.0)
-- **Supabase:** $0 (free tier - 500MB database, 2GB bandwidth)
-- **Resend Email:** $0 (free tier - 100 emails/day)
-- **Anthropic API:** ~$20/month (estimated - 50 forms × $0.40/analysis)
-- **Total Year 1:** ~$255
-
-### Technical Constraints
-- Must work in Cursor with AI assistance
-- Use free/cheap services to minimize costs
-- Mobile-first responsive design required
-- No backend beyond API routes (serverless)
-- Keep it simple - avoid over-engineering
+**Design assets required:**
+- [ ] Logo/branding for questionnaire header
+- [ ] Color palette (primary, secondary, accent, neutral grays)
+- [ ] Typography (headings, body, mono for code examples if needed)
+- [ ] Icon set for feature selection checkboxes
+- [ ] Loading states and micro-interactions
 
 ---
 
-## 🚨 KEY RISKS & MITIGATIONS
+## 📐 Implementation Phases
 
-| Risk | Likelihood | Impact | Mitigation |
-|------|-----------|--------|------------|
-| AI generates inaccurate recommendations | Medium | High | Test with 10+ scenarios, refine prompts, add human review step |
-| Form too long/complex for clients | Medium | High | User test with 3 non-technical people, time them |
-| Conditional logic breaks | Low | Medium | Comprehensive testing of all question paths |
-| Email delivery fails | Low | High | Use reliable service (Resend), add retry logic, test thoroughly |
-| AI API costs spike | Low | Medium | Set usage alerts, cache common responses, monitor costs weekly |
-| Scope.md format incompatible with Cursor | Low | Medium | Use exact template from current workflow, test immediately |
+### Phase 1: Core Questionnaire (Week 1-2)
+- Build question flow with state management
+- Implement adaptive Q2 wording based on Q1
+- Create smart default for Q3 from Q2 analysis
+- Session persistence in localStorage
+- Mobile-first responsive layout
 
----
+### Phase 2: Cost Calculation Engine (Week 2-3)
+- Feature cost database integration
+- Real-time calculation with multipliers
+- Running total UI component
+- Platform/complexity cost adjustments
 
-## 📝 DEFINITION OF DONE
+### Phase 3: Document Generation (Week 3-4)
+- Scope PDF template creation
+- Data mapping from form to document
+- PDF generation pipeline (React-PDF/Puppeteer)
+- Email delivery integration
 
-**MVP is complete when:**
-- [ ] Landing page is live and professional
-- [ ] Website questionnaire has all 6 sections working
-- [ ] Conditional logic shows/hides questions correctly
-- [ ] Save/resume generates working link
-- [ ] Form validates all required fields
-- [ ] AI generates coherent tech stack recommendations
-- [ ] Technical SCOPE.md matches Cursor workflow format exactly
-- [ ] Client version is in plain English with no jargon
-- [ ] Email delivery works 100% of the time
-- [ ] Tool works on mobile phone (iPhone and Android tested)
-- [ ] 3 real clients have successfully used it
-- [ ] Generated scopes required less than 15 minutes editing
-- [ ] Deployed to production URL
-- [ ] Domain pointed to deployment
+### Phase 4: Polish & Testing (Week 4-5)
+- Accessibility audit and fixes
+- Performance optimization
+- Cross-browser testing
+- Mobile device testing
+- Error handling and edge cases
 
----
+### Phase 5: Analytics & Launch (Week 5-6)
+- Analytics integration (field-level tracking)
+- Launch checklist execution
+- Monitoring setup
+- Soft launch with limited traffic
 
-## 🎓 LEARNING GOALS
-
-This project helps me learn:
-- Complex form state management in React
-- Conditional logic and dynamic UIs
-- AI API integration (Anthropic Claude)
-- Email automation
-- Database integration (Supabase)
-- Deployment and hosting (Vercel)
-- UX design for non-technical users
-- Converting business requirements into technical specs
+### Phase 6: Post-Launch Optimization (Week 7-8)
+- First week data analysis
+- A/B test planning for Phase 2
+- Bug fixes and quick wins
+- Documentation for team handoff
 
 ---
 
-## 📞 SUCCESS METRICS (After 1 Month)
+## 📊 Key Metrics to Track
 
-- **Usage:** 10+ forms completed
-- **Completion Rate:** 80%+ finish once started
-- **Time:** Average completion under 20 minutes
-- **Accuracy:** 90%+ of scopes require minimal editing
-- **Client Feedback:** 4.5+ stars on clarity and ease of use
-- **Business Impact:** 2+ clients signed from using this tool
+**Form Performance:**
+- Completion rate (target: 70%+ after Q3)
+- Average completion time (target: 4-8 minutes)
+- Drop-off by question (identify problem questions)
+- Mobile vs. desktop completion rates
+
+**Technical Performance:**
+- Page load time (target: <1.5s)
+- Cost calculation speed (target: <50ms)
+- PDF generation time (target: <5s)
+- Error rate (target: <1% of submissions)
+
+**Business Outcomes:**
+- Total submissions per week
+- Budget distribution (which ranges most common?)
+- Business type distribution
+- Features selected most frequently
+
+---
+
+## 🚨 Critical Success Factors
+
+1. **Cost Transparency:** Users must see real-time costs without surprise at end
+2. **Mobile Excellence:** 60% of traffic is mobile—must work flawlessly on phones
+3. **Trust Building:** Professional design, clear language, no dark patterns
+4. **Completion Rate:** If users abandon after Q3, questionnaire has failed
+5. **48-Hour Delivery:** Team must execute prototype creation reliably
+6. **Scope Quality:** Generated documents must be accurate enough for team to build from
+
+---
+
+## 🛡️ Risk Mitigation
+
+**Risk:** Users abandon questionnaire mid-flow  
+**Mitigation:** Session persistence, momentum-building opening, progress visibility without counts
+
+**Risk:** Cost calculation overwhelms/confuses users  
+**Mitigation:** Show running total, not itemized breakdown; add cost only when features selected
+
+**Risk:** Generated scopes are inaccurate or incomplete  
+**Mitigation:** Structured template, comprehensive question coverage, manual review before client delivery
+
+**Risk:** Email delivery fails (spam filters, bounce)  
+**Mitigation:** Reputable email service, SPF/DKIM/DMARC setup, confirmation page with "email sent" message
+
+**Risk:** Mobile keyboard obscures form fields  
+**Mitigation:** Scroll into view on focus, viewport-aware positioning, test on multiple devices
+
+**Risk:** Accessibility violations block users  
+**Mitigation:** Build with accessibility from start, automated testing, keyboard navigation testing
 
 ---
 
 **Current scope locked:** ✅ Yes  
-**Ready to start:** ✅ Yes  
-**First task:** Project setup and landing page  
+**Next review:** After first 100 submissions and 1 month of data  
+**Change requests:** Routed through product owner approval process  
 
 ---
 
-## 🚀 NEXT STEPS
-
-1. Copy this SCOPE.md into project folder
-2. Initialize Next.js project with TypeScript + Tailwind
-3. Set up Cursor workflow files (STATUS.md with first task)
-4. Begin with landing page design and implementation
-5. Type `/init` in Cursor to start building!
+**This scope represents the minimal viable product to validate the Introspect concept. All enhancements are explicitly deferred to Phase 2 or Phase 3 to ensure focused, quality execution of core functionality.**

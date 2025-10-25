@@ -2,37 +2,37 @@
 
 ## 🚀 Core Workflow
 
-### `/init` - Start session
+### `\init` - Start session
 Loads STATUS.md, SCOPE.md, shows current task
 
-### `/next` - Get next step
+### `\next` - Get next step
 Provides next implementation action
 
-### `/pause` - Learning mode
+### `\pause` - Learning mode
 AI explains instead of implementing
 
 ## ✅ Quality Control
 
-### `/verify` - Test implementation
+### `\verify` - Test implementation
 Suggests testing approach
 
-### `/commit` - Save to Git
-Suggests commit message and commands
+### `\commit` - Save & Push to Git
+Commits changes with descriptive message, then pushes to GitHub
 
-### `/save` - Update STATUS.md
+### `\save` - Update STATUS.md
 Suggests status update
 
 ## 🎯 Scope Management
 
-### `/scope` - Check boundaries
+### `\scope` - Check boundaries
 Reviews SCOPE.md, validates new requests
 
-### `/options` - Show all commands
+### `\options` - Show all commands
 Displays this list
 
 ## 🛠️ Utilities
 
-### `/format` - Fix AI format
+### `\format` - Fix AI format
 Reloads .cursorrules
 
 ### `STOP` - Emergency clarity

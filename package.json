@@ -1,0 +1,48 @@
+{
+  "name": "introspect",
+  "version": "1.0.0",
+  "description": "Intelligent Project Requirements Questionnaire - 18-question adaptive form with real-time cost calculator and PDF generation",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "autoprefixer": "^10.0.0",
+    "clsx": "^2.1.1",
+    "next": "^14.0.0",
+    "postcss": "^8.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/david1984moore/Introspect.git"
+  },
+  "keywords": [
+    "questionnaire",
+    "requirements",
+    "scope",
+    "project-planning",
+    "cost-calculator"
+  ],
+  "author": "Applicreations",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/david1984moore/Introspect/issues"
+  },
+  "homepage": "https://introspect.applicreations.com"
+}
