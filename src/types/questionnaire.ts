@@ -22,7 +22,10 @@ export interface QuestionnaireState {
     // Q3: Target Customers (smart default from Q2)
     targetCustomers: string[]
     
-    // Q4: Primary Goal
+    // Q4: Problem Statement (adaptive based on Q1)
+    problemStatement: string
+    
+    // Q5: Primary Goal
     primaryGoal: ProjectGoal | null
     
     // Q5: Success Metrics

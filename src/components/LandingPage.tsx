@@ -5,6 +5,8 @@ import { formatCurrency } from '@/lib/utils'
 import { QuestionContainer } from './QuestionContainer'
 import { QuestionOne } from './questions/QuestionOne'
 import { QuestionTwo } from './questions/QuestionTwo'
+import { QuestionThree } from './questions/QuestionThree'
+import { QuestionFour } from './questions/QuestionFour'
 
 export function LandingPage() {
   const { state, startQuestionnaire } = useQuestionnaire()
@@ -136,7 +138,9 @@ function QuestionnaireFlow() {
       case 2:
         return <QuestionTwo />
       case 3:
-        return <div className="text-center p-8">Question 3 - Coming Soon</div>
+        return <QuestionThree />
+      case 4:
+        return <QuestionFour />
       default:
         return <div className="text-center p-8">Question {currentQuestion} - Coming Soon</div>
     }

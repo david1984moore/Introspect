@@ -14,6 +14,7 @@ export const initialState: QuestionnaireState = {
     businessType: null,
     businessDescription: '',
     targetCustomers: [],
+    problemStatement: '',
     primaryGoal: null,
     successMetrics: [],
     features: [],
